@@ -7,6 +7,7 @@ members = [
     "crates/kohaku-test-utils",
     "crates/eip-1193-provider",
     "crates/poseidon-rust",
+    "crates/pq-stealth",
     "crates/railgun",
     "crates/railgun-ts",
     "crates/tornadocash",
@@ -88,6 +89,14 @@ kohaku-db = { path = "./crates/kohaku-db" }
 kohaku-alloy-ts = { path = "./crates/kohaku-alloy-ts" }
 tower-service = "0.3.3"
 getrandom = "0.4"
+pq-stealth = { path = "./crates/pq-stealth" }
+pq-stealth-ethereum = { path = "./crates/pq-stealth-ethereum" }
+pqsa-core = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
+pqsa-kem = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
+pqsa-ec = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
+pqsa-per-payment = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
+pqsa-channel = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
+pqsa-conformance = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
 
 [patch.crates-io]
 # websnark-rs = { git = "https://github.com/Robert-MacWha/websnark-rs" }

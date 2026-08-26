@@ -1,0 +1,20 @@
+[package]
+name = "pq-stealth"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+hex.workspace = true
+pqsa-channel.workspace = true
+pqsa-core.workspace = true
+pqsa-per-payment.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+pqsa-conformance.workspace = true
+
+[lints]
+workspace = true
