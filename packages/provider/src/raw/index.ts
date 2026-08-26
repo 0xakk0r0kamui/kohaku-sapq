@@ -1,5 +1,5 @@
 import { Hex } from "ox/Hex";
-import { EthereumProvider, TransactionReceipt, TxLog, CallData } from "..";
+import { EthereumProvider, TransactionReceipt, TxLog, CallData, BlockHeader } from "..";
 import { HexString, hexToBigInt } from "./hex";
 import { Provider } from 'ox/Provider';
 import { Block, Filter } from "ox";
@@ -43,6 +43,21 @@ export const raw = (client: Provider): EthereumProvider<Provider> => {
             });
 
             return hexToBigInt(hex);
+        },
+        async getBlockHeader(block = 'latest'): Promise<BlockHeader | null> {
+            const number = typeof block === 'bigint' ? toHex(block) : block;
+            const value = await client.request({
+                method: 'eth_getBlockByNumber',
+                params: [number, false],
+            }) as RpcBlock | null;
+
+            if (!value || value.number == null || value.hash == null) return null;
+
+            return {
+                number: hexToBigInt(value.number),
+                hash: value.hash,
+                parentHash: value.parentHash,
+            };
         },
         async waitForTransaction(txHash: string): Promise<void> {
             const start = Date.now();
@@ -103,6 +118,12 @@ export const raw = (client: Provider): EthereumProvider<Provider> => {
             return hexToBigInt(hex);
         },
         getTransactionReceipt,
+        async sendRawTransaction(rawTransaction) {
+            return await client.request({
+                method: 'eth_sendRawTransaction',
+                params: [rawTransaction],
+            }) as Hex;
+        },
         async getTransactionCount(address: `0x${string}`, block?: number): Promise<number> {
             const hex = await client.request({
                 method: 'eth_getTransactionCount',
@@ -116,28 +137,60 @@ export const raw = (client: Provider): EthereumProvider<Provider> => {
 
 type RpcLog = {
     blockNumber: HexString;
-    topics: string[];
+    blockHash: Hex;
+    transactionHash: Hex;
+    transactionIndex: HexString;
+    logIndex: HexString;
+    removed?: boolean;
+    topics: Hex[];
     data: HexString;
     address: HexString;
 };
 
+type RpcBlock = {
+    number: HexString | null;
+    hash: Hex | null;
+    parentHash: Hex;
+};
+
 type RpcReceipt = {
     blockNumber: HexString;
+    blockHash: Hex;
+    transactionHash: Hex;
+    transactionIndex: HexString;
+    from: Hex;
+    to: Hex | null;
+    contractAddress: Hex | null;
     status?: HexString;
     logs: RpcLog[];
     gasUsed: HexString;
+    cumulativeGasUsed: HexString;
+    effectiveGasPrice?: HexString;
 };
 
 const convertLog = (log: RpcLog): TxLog => ({
     blockNumber: hexToBigInt(log.blockNumber),
+    blockHash: log.blockHash,
+    transactionHash: log.transactionHash,
+    transactionIndex: hexToBigInt(log.transactionIndex),
+    logIndex: hexToBigInt(log.logIndex),
+    removed: log.removed ?? false,
     topics: [...log.topics],
-    data: log.data,
-    address: log.address,
+    data: log.data as Hex,
+    address: log.address as Hex,
 });
 
 const convertReceipt = (receipt: RpcReceipt): TransactionReceipt => ({
     blockNumber: hexToBigInt(receipt.blockNumber),
+    blockHash: receipt.blockHash,
+    transactionHash: receipt.transactionHash,
+    transactionIndex: hexToBigInt(receipt.transactionIndex),
+    from: receipt.from,
+    to: receipt.to,
+    contractAddress: receipt.contractAddress,
     status: receipt.status ? hexToBigInt(receipt.status) : BigInt(0),
     logs: receipt.logs.map(convertLog),
     gasUsed: hexToBigInt(receipt.gasUsed),
+    cumulativeGasUsed: hexToBigInt(receipt.cumulativeGasUsed),
+    effectiveGasPrice: receipt.effectiveGasPrice ? hexToBigInt(receipt.effectiveGasPrice) : 0n,
 });

@@ -1,5 +1,5 @@
 import { Filter } from "ox/Filter";
-import { TxLog, TransactionReceipt, CallData, TxData } from "./tx";
+import { TxLog, TransactionReceipt, CallData, TxRequest, BlockHeader, Hex } from "./tx";
 import { RpcRequest } from "ox/RpcRequest";
 
 /**
@@ -24,6 +24,9 @@ export type EthereumProvider<T = unknown> = {
    */
   getBlockNumber(): Promise<bigint>;
 
+  /** Get a block's canonical identity for reorg detection. */
+  getBlockHeader(block?: bigint | 'latest' | 'pending' | 'earliest'): Promise<BlockHeader | null>;
+
   /**
    * Wait for a transaction to be mined
    */
@@ -43,6 +46,9 @@ export type EthereumProvider<T = unknown> = {
    * Get transaction receipt
    */
   getTransactionReceipt(txHash: string): Promise<TransactionReceipt | null>;
+
+  /** Broadcast an already signed transaction without rebuilding it. */
+  sendRawTransaction(rawTransaction: Hex): Promise<Hex>;
 
   /**
    * Generic make request method to be able to use ABIs
@@ -83,10 +89,16 @@ export interface TxSigner {
   /**
    * Send a transaction
    */
-  sendTransaction(tx: TxData): Promise<string>;
+  sendTransaction(tx: TxRequest): Promise<string>;
+
+  /** Sign without broadcasting so exact raw bytes can be persisted first. */
+  signTransaction(tx: TxRequest): Promise<Hex>;
 
   /**
    * Get the signer's address
    */
   getAddress(): Promise<string>;
 }
+
+/** A signer suitable for managed raw-transaction submission. */
+export type RawTxSigner = Pick<TxSigner, 'getAddress' | 'signTransaction'>;

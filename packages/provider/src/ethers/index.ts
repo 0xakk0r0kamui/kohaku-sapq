@@ -1,6 +1,6 @@
 import type { JsonRpcProvider, Log } from 'ethers';
 import { Filter } from 'ox';
-import type { TxLog, TransactionReceipt, CallData } from '../tx';
+import type { TxLog, TransactionReceipt, CallData, BlockHeader, Hex } from '../tx';
 import type { EthereumProvider } from '../provider';
 import { AddressLike } from 'ethers';
 import { HexString } from '~/raw/hex';
@@ -32,6 +32,19 @@ export const ethers = (provider: JsonRpcProvider): EthereumProvider<JsonRpcProvi
     async getBlockNumber(): Promise<bigint> {
       return BigInt(await provider.getBlockNumber());
     },
+    async getBlockHeader(block = 'latest'): Promise<BlockHeader | null> {
+      const value = await provider.getBlock(
+        typeof block === 'bigint' ? Number(block) : block,
+      );
+
+      if (!value || !value.hash) return null;
+
+      return {
+        number: BigInt(value.number),
+        hash: value.hash as Hex,
+        parentHash: value.parentHash as Hex,
+      };
+    },
     async waitForTransaction(txHash: string): Promise<void> {
       await provider.waitForTransaction(txHash);
     },
@@ -48,10 +61,21 @@ export const ethers = (provider: JsonRpcProvider): EthereumProvider<JsonRpcProvi
 
       return {
         blockNumber: BigInt(receipt.blockNumber),
+        blockHash: receipt.blockHash as Hex,
+        transactionHash: receipt.hash as Hex,
+        transactionIndex: BigInt(receipt.index),
+        from: receipt.from as Hex,
+        to: receipt.to as Hex | null,
+        contractAddress: receipt.contractAddress as Hex | null,
         status: BigInt(receipt.status ?? 0),
         logs: receipt.logs.map(convertLog),
         gasUsed: receipt.gasUsed,
+        cumulativeGasUsed: receipt.cumulativeGasUsed,
+        effectiveGasPrice: receipt.gasPrice,
       };
+    },
+    async sendRawTransaction(rawTransaction) {
+      return await provider.send('eth_sendRawTransaction', [rawTransaction]) as Hex;
     },
     async call(call: CallData): Promise<`0x${string}` | undefined> {
       const result = await provider.call({
@@ -89,8 +113,13 @@ export const ethers = (provider: JsonRpcProvider): EthereumProvider<JsonRpcProvi
 const convertLog = (log: Log): TxLog => {
   return {
     blockNumber: BigInt(log.blockNumber),
-    topics: [...log.topics],
-    data: log.data,
-    address: log.address,
+    blockHash: log.blockHash as Hex,
+    transactionHash: log.transactionHash as Hex,
+    transactionIndex: BigInt(log.transactionIndex),
+    logIndex: BigInt(log.index),
+    removed: log.removed,
+    topics: [...log.topics] as Hex[],
+    data: log.data as Hex,
+    address: log.address as Hex,
   };
 };
