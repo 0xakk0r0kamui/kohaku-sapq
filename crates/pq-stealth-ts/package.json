@@ -1,0 +1,50 @@
+{
+  "name": "@kohaku-eth/pq-stealth",
+  "version": "0.0.0-phase1",
+  "description": "Experimental PQ stealth address plugin for Kohaku",
+  "type": "module",
+  "private": true,
+  "main": "./dist/sdk/lib.js",
+  "types": "./dist/sdk/lib.d.ts",
+  "imports": {
+    "#scanner-loader": {
+      "node": "./dist/src/worker-loader.node.js",
+      "browser": "./dist/src/worker-loader.browser.js",
+      "default": "./dist/src/worker-loader.browser.js"
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/sdk/lib.d.ts",
+      "import": "./dist/sdk/lib.js"
+    },
+    "./scanner.worker.js": "./dist/src/scanner.worker.js",
+    "./scanner.worker.node.js": "./dist/src/scanner.worker.node.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run build:wasm && pnpm run build:js",
+    "build:wasm": "wasm-pack build --target web --out-name index --out-dir pkg",
+    "build:js": "tsup --config tsup.config.ts && cp -r pkg dist/",
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:wasm-conformance": "wasm-pack test --node --test wasm_conformance",
+    "test:e2e": "pnpm run build:js && forge build --root tests/fixtures/anvil && vitest run --config vitest.e2e.config.ts"
+  },
+  "dependencies": {
+    "@kohaku-eth/plugins": "workspace:*",
+    "@kohaku-eth/provider": "workspace:*",
+    "comlink": "^4.4.2",
+    "viem": "^2.51.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.1"
+  }
+}

@@ -1,0 +1,29 @@
+[package]
+name = "pq-stealth-ts"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+console_error_panic_hook.workspace = true
+js-sys.workspace = true
+pq-stealth.workspace = true
+pq-stealth-ethereum.workspace = true
+serde.workspace = true
+serde-wasm-bindgen.workspace = true
+wasm-bindgen.workspace = true
+
+[dev-dependencies]
+hex.workspace = true
+pqsa-channel.workspace = true
+pqsa-conformance.workspace = true
+pqsa-per-payment.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+wasm-bindgen-test = "=0.3.58"
+
+[lints]
+workspace = true

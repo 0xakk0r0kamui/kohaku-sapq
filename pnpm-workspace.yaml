@@ -17,4 +17,5 @@ packages:
   - "packages/mimc-tree"
   - "examples/pq-account"
   - "crates/railgun-ts"
+  - "crates/pq-stealth-ts"
   - "docs"

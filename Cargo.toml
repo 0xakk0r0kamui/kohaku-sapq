@@ -9,6 +9,7 @@ members = [
     "crates/poseidon-rust",
     "crates/pq-stealth",
     "crates/pq-stealth-ethereum",
+    "crates/pq-stealth-ts",
     "crates/railgun",
     "crates/railgun-ts",
     "crates/tornadocash",

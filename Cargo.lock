@@ -4642,6 +4642,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "pq-stealth-ts"
+version = "0.1.0"
+dependencies = [
+ "console_error_panic_hook",
+ "hex",
+ "js-sys",
+ "pq-stealth",
+ "pq-stealth-ethereum",
+ "pqsa-channel",
+ "pqsa-conformance",
+ "pqsa-per-payment",
+ "serde",
+ "serde-wasm-bindgen",
+ "serde_json",
+ "sha2",
+ "wasm-bindgen",
+ "wasm-bindgen-test",
+]
+
+[[package]]
 name = "pqsa-channel"
 version = "0.0.0"
 source = "git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b#f7ba69c124acd3e5015c59e74ab476126068f29b"
