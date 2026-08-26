@@ -8,6 +8,7 @@ members = [
     "crates/eip-1193-provider",
     "crates/poseidon-rust",
     "crates/pq-stealth",
+    "crates/pq-stealth-ethereum",
     "crates/railgun",
     "crates/railgun-ts",
     "crates/tornadocash",
@@ -89,6 +90,7 @@ kohaku-db = { path = "./crates/kohaku-db" }
 kohaku-alloy-ts = { path = "./crates/kohaku-alloy-ts" }
 tower-service = "0.3.3"
 getrandom = "0.4"
+getrandom-02 = { package = "getrandom", version = "0.2", features = ["js"] }
 pq-stealth = { path = "./crates/pq-stealth" }
 pq-stealth-ethereum = { path = "./crates/pq-stealth-ethereum" }
 pqsa-core = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }

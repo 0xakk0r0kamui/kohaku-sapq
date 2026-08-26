@@ -265,6 +265,7 @@ dependencies = [
  "alloy-primitives",
  "alloy-rlp",
  "borsh",
+ "k256",
  "serde",
  "thiserror 2.0.18",
 ]
@@ -4625,6 +4626,18 @@ dependencies = [
  "pqsa-per-payment",
  "serde",
  "serde_json",
+ "thiserror 2.0.18",
+]
+
+[[package]]
+name = "pq-stealth-ethereum"
+version = "0.1.0"
+dependencies = [
+ "alloy",
+ "alloy-sol-types",
+ "getrandom 0.2.17",
+ "pq-stealth",
+ "serde",
  "thiserror 2.0.18",
 ]
 
