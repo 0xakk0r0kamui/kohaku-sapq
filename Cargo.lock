@@ -4622,8 +4622,10 @@ dependencies = [
  "hex",
  "pqsa-channel",
  "pqsa-conformance",
- "pqsa-core",
- "pqsa-per-payment",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a)",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-per-payment 0.0.0 (git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a)",
+ "pqsa-per-payment 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
  "serde",
  "serde_json",
  "thiserror 2.0.18",
@@ -4652,7 +4654,7 @@ dependencies = [
  "pq-stealth-ethereum",
  "pqsa-channel",
  "pqsa-conformance",
- "pqsa-per-payment",
+ "pqsa-per-payment 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
  "serde",
  "serde-wasm-bindgen",
  "serde_json",
@@ -4666,10 +4668,10 @@ name = "pqsa-channel"
 version = "0.0.0"
 source = "git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b#f7ba69c124acd3e5015c59e74ab476126068f29b"
 dependencies = [
- "pqsa-core",
- "pqsa-ec",
- "pqsa-kem",
- "pqsa-per-payment",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-ec 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-kem 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-per-payment 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
  "sha2",
  "sha3 0.10.9",
 ]
@@ -4681,13 +4683,23 @@ source = "git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba6
 dependencies = [
  "hex",
  "pqsa-channel",
- "pqsa-core",
- "pqsa-ec",
- "pqsa-kem",
- "pqsa-per-payment",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-ec 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-kem 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-per-payment 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
  "serde",
  "serde_json",
  "sha2",
+]
+
+[[package]]
+name = "pqsa-core"
+version = "0.0.0"
+source = "git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a#478b1f0ec3ea208b35a6a03c5858a19af48c660a"
+dependencies = [
+ "hkdf",
+ "sha2",
+ "sha3 0.10.9",
 ]
 
 [[package]]
@@ -4703,11 +4715,30 @@ dependencies = [
 [[package]]
 name = "pqsa-ec"
 version = "0.0.0"
+source = "git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a#478b1f0ec3ea208b35a6a03c5858a19af48c660a"
+dependencies = [
+ "k256",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a)",
+ "sha3 0.10.9",
+]
+
+[[package]]
+name = "pqsa-ec"
+version = "0.0.0"
 source = "git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b#f7ba69c124acd3e5015c59e74ab476126068f29b"
 dependencies = [
  "k256",
- "pqsa-core",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
  "sha3 0.10.9",
+]
+
+[[package]]
+name = "pqsa-kem"
+version = "0.0.0"
+source = "git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a#478b1f0ec3ea208b35a6a03c5858a19af48c660a"
+dependencies = [
+ "ml-kem",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a)",
 ]
 
 [[package]]
@@ -4716,7 +4747,19 @@ version = "0.0.0"
 source = "git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b#f7ba69c124acd3e5015c59e74ab476126068f29b"
 dependencies = [
  "ml-kem",
- "pqsa-core",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+]
+
+[[package]]
+name = "pqsa-per-payment"
+version = "0.0.0"
+source = "git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a#478b1f0ec3ea208b35a6a03c5858a19af48c660a"
+dependencies = [
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a)",
+ "pqsa-ec 0.0.0 (git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a)",
+ "pqsa-kem 0.0.0 (git+https://github.com/namnc/pq-stealth-scheme3-public.git?rev=478b1f0ec3ea208b35a6a03c5858a19af48c660a)",
+ "sha2",
+ "sha3 0.10.9",
 ]
 
 [[package]]
@@ -4724,9 +4767,9 @@ name = "pqsa-per-payment"
 version = "0.0.0"
 source = "git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b#f7ba69c124acd3e5015c59e74ab476126068f29b"
 dependencies = [
- "pqsa-core",
- "pqsa-ec",
- "pqsa-kem",
+ "pqsa-core 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-ec 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
+ "pqsa-kem 0.0.0 (git+https://github.com/namnc/pq-stealth-reference-public.git?rev=f7ba69c124acd3e5015c59e74ab476126068f29b)",
  "sha2",
  "sha3 0.10.9",
 ]

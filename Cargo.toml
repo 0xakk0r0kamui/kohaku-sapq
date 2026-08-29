@@ -94,12 +94,18 @@ getrandom = "0.4"
 getrandom-02 = { package = "getrandom", version = "0.2", features = ["js"] }
 pq-stealth = { path = "./crates/pq-stealth" }
 pq-stealth-ethereum = { path = "./crates/pq-stealth-ethereum" }
+# Schemes 2, 4, and 5. Scheme 3 is the standalone export below: the two trees share crate
+# names, so the scheme-3 graph is renamed at the dependency key.
 pqsa-core = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
 pqsa-kem = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
 pqsa-ec = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
 pqsa-per-payment = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
 pqsa-channel = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
 pqsa-conformance = { git = "https://github.com/namnc/pq-stealth-reference-public.git", rev = "f7ba69c124acd3e5015c59e74ab476126068f29b" }
+pqsa-s3-core = { package = "pqsa-core", git = "https://github.com/namnc/pq-stealth-scheme3-public.git", rev = "478b1f0ec3ea208b35a6a03c5858a19af48c660a" }
+pqsa-s3-kem = { package = "pqsa-kem", git = "https://github.com/namnc/pq-stealth-scheme3-public.git", rev = "478b1f0ec3ea208b35a6a03c5858a19af48c660a" }
+pqsa-s3-ec = { package = "pqsa-ec", git = "https://github.com/namnc/pq-stealth-scheme3-public.git", rev = "478b1f0ec3ea208b35a6a03c5858a19af48c660a" }
+pqsa-s3-per-payment = { package = "pqsa-per-payment", git = "https://github.com/namnc/pq-stealth-scheme3-public.git", rev = "478b1f0ec3ea208b35a6a03c5858a19af48c660a" }
 
 [patch.crates-io]
 # websnark-rs = { git = "https://github.com/Robert-MacWha/websnark-rs" }

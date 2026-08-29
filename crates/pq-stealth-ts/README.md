@@ -54,10 +54,16 @@ transaction state and raw signed bytes.
 
 ## Verification
 
-PQSA is pinned by git `rev` in the workspace `Cargo.toml`. Storage compatibility is `schema_version` only. For a sibling `pq-stealth-reference-public` checkout, paste `.cargo/pqsa-local-patch.toml` into that `Cargo.toml` and do not commit it.
+PQSA is pinned by git `rev` in the workspace `Cargo.toml`. Schemes 2, 4, and 5 come from
+`pq-stealth-reference-public`; scheme 3 (hybrid per-payment) comes from
+`pq-stealth-scheme3-public`. Storage compatibility is `schema_version` only. For sibling
+checkouts, paste `.cargo/pqsa-local-patch.toml` into the workspace `Cargo.toml` and do not
+commit it.
 
-- `cargo test -p pq-stealth -p pq-stealth-ethereum` runs native tests and the pinned 48 cases.
-- `pnpm test:wasm-conformance` executes those same checksum-verified vectors in Node/WASM.
+- `cargo test -p pq-stealth -p pq-stealth-ethereum` runs native tests, the pinned scheme 2/4/5
+  cases, and scheme 3's V3-09 keygen against the standalone export.
+- `pnpm test:wasm-conformance` executes the same checksum-verified scheme 2/4/5 vectors in
+  Node/WASM.
 - `pnpm test` runs wire, persistence, concurrency, lifecycle, crash, and role-guard regressions.
 - `pnpm test:e2e` runs the Anvil matrix for four schemes and native/ERC-20/ERC-721 holdings,
   including channel restart, opaque spend, and tentative-tail reorg replay.

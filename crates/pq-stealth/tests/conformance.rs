@@ -1,9 +1,12 @@
 use pqsa_channel::{SchemeId4, SchemeId5};
 use pqsa_conformance::{Outcome, load, run_channel_vector, run_vector};
-use pqsa_per_payment::{SchemeId2, SchemeId3};
+use pqsa_per_payment::SchemeId2;
+use pqsa_s3_core::StealthScheme;
+use pqsa_s3_per_payment::SchemeId3;
+use serde_json::Value;
 
 #[test]
-fn pinned_upstream_vectors_execute_the_golden_48_cases() {
+fn pinned_upstream_vectors_execute_schemes_2_4_5() {
     let directory =
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/pqsa-vectors");
     let vectors = load(&directory).expect("fixture checksums match their pinned manifest");
@@ -12,7 +15,6 @@ fn pinned_upstream_vectors_execute_the_golden_48_cases() {
     for vector in &vectors {
         for outcome in [
             run_vector::<SchemeId2>(vector),
-            run_vector::<SchemeId3>(vector),
             run_channel_vector::<SchemeId4>(vector),
             run_channel_vector::<SchemeId5>(vector),
         ] {
@@ -31,7 +33,20 @@ fn pinned_upstream_vectors_execute_the_golden_48_cases() {
         }
     }
     assert_eq!(
-        executed, 48,
+        executed, 40,
         "golden executed count changed ({skipped} cases were not applicable)"
     );
+}
+
+#[test]
+fn scheme3_public_v3_09_keygen_matches_its_fixture() {
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/pqsa-s3-vectors/section-2_9.json");
+    let doc: Value = serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap();
+    let row = &doc["vectors"]["V3-09"];
+    let seed = hex::decode(row["given"]["keygen_seed"].as_str().unwrap()).unwrap();
+    let expected = hex::decode(row["expect"]["meta_address"].as_str().unwrap()).unwrap();
+    let (meta, _, _) = SchemeId3::keygen(&seed).expect("V3-09 seed is well-formed");
+    assert_eq!(SchemeId3::meta_to_bytes(&meta), expected);
+    assert_eq!(expected.len(), 1_250);
 }

@@ -30,7 +30,7 @@ describe('pinned PQSA WASM boundary', () => {
       };
       const expected = {
         'mlkem-per-payment': { meta: 1_217, ephemeral: 1_088, metadata: 8 },
-        'hybrid-per-payment': { meta: 1_250, ephemeral: 33, metadata: 1_096 },
+        'hybrid-per-payment': { meta: 1_250, ephemeral: 33, metadata: 1_089 },
         'mlkem-channel': { meta: 1_217, ephemeral: 0, metadata: 1_096 },
         'hybrid-channel': { meta: 1_250, ephemeral: 33, metadata: 1_096 },
       }[scheme];

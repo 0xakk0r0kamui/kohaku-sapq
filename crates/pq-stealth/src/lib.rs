@@ -3,6 +3,9 @@
 //! This crate deliberately has no provider, keystore, or storage interface. The TypeScript
 //! adapter owns all host I/O; this crate owns only state shapes and calls into the pinned `pqsa`
 //! implementation for protocol operations and serialization.
+//!
+//! Scheme 3 (hybrid per-payment) is the standalone `pq-stealth-scheme3-public` export. Schemes
+//! 2, 4, and 5 remain on `pq-stealth-reference-public`.
 
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -66,6 +69,18 @@ impl From<pqsa_core::Error> for Error {
             pqsa_core::Error::SeedRejected => Self::SeedRejected,
             pqsa_core::Error::CounterExhausted => Self::CounterExhausted,
             pqsa_core::Error::TrackingKeyMismatch => Self::TrackingKeyMismatch,
+            other => Self::Protocol(format!("{other:?}")),
+        }
+    }
+}
+
+impl From<pqsa_s3_core::Error> for Error {
+    fn from(value: pqsa_s3_core::Error) -> Self {
+        match value {
+            pqsa_s3_core::Error::Malformed => Self::MalformedMetaAddress,
+            pqsa_s3_core::Error::SeedRejected => Self::SeedRejected,
+            pqsa_s3_core::Error::CounterExhausted => Self::CounterExhausted,
+            pqsa_s3_core::Error::TrackingKeyMismatch => Self::TrackingKeyMismatch,
             other => Self::Protocol(format!("{other:?}")),
         }
     }

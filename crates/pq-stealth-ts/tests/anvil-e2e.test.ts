@@ -189,6 +189,70 @@ describe('PQ stealth Phase 1 Anvil matrix', () => {
     }
   });
 
+  it('scheme 3 hybrid per-payment uses the standalone 1-byte view-tag wire and round-trips a native payment', async () => {
+    const storage = new TestStorage();
+    const host = createHost(storage);
+    const plugin = await pqStealthFactory(host, {
+      accountIndex: 2,
+      operationalMode: 'create',
+      deployment: {
+        announcerAddress: announcer.address,
+        registryAddress: registry.address,
+        announcerStartBlock: 0n,
+        finalityDepth: 0n,
+        scanBatchSize: 100,
+      },
+    });
+    const identity = await plugin.identity('hybrid-per-payment');
+    expect(identity.scheme_id).toBe(3);
+    expect(identity.meta_address).toHaveLength(1_250);
+
+    const [registration] = await plugin.register({ schemes: ['hybrid-per-payment'] });
+    await broadcastAndRecord(plugin, registration!, 'registration');
+    await plugin.refreshOperations();
+
+    const operation = await plugin.preparePayment({
+      recipient: { registrant: account.address },
+      scheme: 'hybrid-per-payment',
+      payer: account.address,
+      asset: { __type: 'native' },
+      amount: parseEther('0.2'),
+    });
+    expect(operation.announcement?.scheme_id).toBe(3);
+    expect(operation.announcement?.ephemeral_pubkey).toHaveLength(33);
+    expect(operation.announcement?.metadata).toHaveLength(1_089);
+
+    await broadcastAndRecord(plugin, operation, 'announcement');
+    await plugin.refreshOperations();
+    await broadcastAndRecord(plugin, operation, 'funding');
+    expect((await plugin.refreshOperations()).find(({ id }) => id === operation.id)?.stage)
+      .toBe('Complete');
+
+    const announced = getAddress(`0x${operation.announcement!.stealth_address
+      .map((byte) => byte.toString(16).padStart(2, '0')).join('')}`);
+    const scanner = await plugin.createScanner();
+    const found = await scanner.scan();
+    await scanner.close();
+    const note = found.find((candidate) =>
+      candidate.address.toLowerCase() === announced.toLowerCase()
+      && candidate.scheme === 'hybrid-per-payment');
+    expect(note?.announcedMatchesDerived).toBe(true);
+
+    const spend = await plugin.prepareSpend({
+      noteId: note!.id,
+      to: receiver,
+      amount: parseEther('0.05'),
+    });
+    const signed = await plugin.signPreparedSpend(spend);
+    const submitted = await plugin.submitPreparedSpend(signed);
+    await publicClient.waitForTransactionReceipt({
+      hash: submitted.attempts.at(-1)!.transactionHash,
+    });
+    expect(await publicClient.getBalance({ address: receiver })).toBeGreaterThanOrEqual(
+      parseEther('0.05'),
+    );
+  });
+
   it('drops a removed tentative announcement and replays its immutable material on the new fork', async () => {
     const storage = new TestStorage();
     const host = createHost(storage);

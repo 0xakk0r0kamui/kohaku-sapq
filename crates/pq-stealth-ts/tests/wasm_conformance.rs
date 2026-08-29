@@ -2,7 +2,7 @@
 
 use pqsa_channel::{SchemeId4, SchemeId5};
 use pqsa_conformance::{Outcome, Vector, run_channel_vector, run_vector};
-use pqsa_per_payment::{SchemeId2, SchemeId3};
+use pqsa_per_payment::SchemeId2;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use wasm_bindgen_test::wasm_bindgen_test;
@@ -39,13 +39,12 @@ const FILES: &[(&str, &[u8])] = &[
 /// The same pinned vector rows execute inside `wasm32-unknown-unknown`, not merely in native
 /// Rust. This integration target is dev-only, so `pqsa-conformance` never enters the shipped WASM.
 #[wasm_bindgen_test]
-fn pinned_upstream_vectors_execute_48_cases_in_wasm() {
+fn pinned_upstream_vectors_execute_schemes_2_4_5_in_wasm() {
     let vectors = embedded_vectors().expect("embedded manifest and vectors are consistent");
     let mut executed = 0;
     for vector in &vectors {
         for outcome in [
             run_vector::<SchemeId2>(vector),
-            run_vector::<SchemeId3>(vector),
             run_channel_vector::<SchemeId4>(vector),
             run_channel_vector::<SchemeId5>(vector),
         ] {
@@ -63,7 +62,7 @@ fn pinned_upstream_vectors_execute_48_cases_in_wasm() {
             }
         }
     }
-    assert_eq!(executed, 48, "WASM golden executed count changed");
+    assert_eq!(executed, 40, "WASM golden executed count changed");
 }
 
 fn embedded_vectors() -> Result<Vec<Vector>, String> {

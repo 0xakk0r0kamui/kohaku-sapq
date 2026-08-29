@@ -73,7 +73,7 @@ export const scannerWorkerApi = {
         continue;
       }
 
-      // This branch precedes every upstream payload parser, including the scheme 3/5 collision.
+      
       if (decoded.scheme_id !== request.identity.scheme_id) continue;
       const wire = {
         scheme: request.scheme,
