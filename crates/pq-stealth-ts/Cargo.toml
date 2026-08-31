@@ -1,0 +1,35 @@
+[package]
+name = "pq-stealth-scheme3"
+version = "0.1.0"
+edition = "2024"
+description = "Kohaku integration for ERC-5564 scheme 3"
+license = "MIT"
+repository = "https://github.com/0xakk0r0kamui/kohaku-sapq"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+alloy = { workspace = true, features = ["consensus", "consensus-secp256k1", "eips", "k256", "network", "signer-local"] }
+console_error_panic_hook.workspace = true
+js-sys.workspace = true
+pqsa-core.workspace = true
+pqsa-per-payment.workspace = true
+serde.workspace = true
+serde-wasm-bindgen.workspace = true
+thiserror.workspace = true
+wasm-bindgen.workspace = true
+zeroize.workspace = true
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom-02.workspace = true
+
+[dev-dependencies]
+hex.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+wasm-bindgen-test = "=0.3.58"
+
+[lints]
+workspace = true

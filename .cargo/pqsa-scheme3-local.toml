@@ -1,0 +1,5 @@
+[patch."https://github.com/namnc/pq-stealth-scheme3-public.git"]
+pqsa-core = { path = "../pq-stealth-scheme3-public/crates/core" }
+pqsa-kem = { path = "../pq-stealth-scheme3-public/crates/kem" }
+pqsa-ec = { path = "../pq-stealth-scheme3-public/crates/ec" }
+pqsa-per-payment = { path = "../pq-stealth-scheme3-public/crates/per-payment" }

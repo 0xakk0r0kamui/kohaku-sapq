@@ -27,6 +27,7 @@ Privacy-first tooling for the Ethereum ecosystem
 | [@kohaku-eth/plugins](packages/plugins) | ✅     | shielded pool protocols standardized plugin interface          |
 | [@kohaku-eth/provider](packages/provider)           | ✅     | provider abstraction (ethers, viem, helios, colibri) |
 | [@kohaku-eth/pq-account](packages/pq-account)       | ✅     | post-quantum 4337 account implementation     |
+| [@kohaku-eth/pq-stealth-scheme3](crates/pq-stealth-ts) | ✅  | ERC-5564 scheme 3 integration backed by ML-KEM-768 |
 
 ## Development
 

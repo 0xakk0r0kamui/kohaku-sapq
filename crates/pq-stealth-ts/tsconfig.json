@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "verbatimModuleSyntax": false,
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["sdk", "tests", "examples", "tsup.config.ts", "vitest.config.ts", "vitest.e2e.config.ts"],
+  "exclude": ["dist", "node_modules"]
+}

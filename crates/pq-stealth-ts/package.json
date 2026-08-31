@@ -1,0 +1,43 @@
+{
+  "name": "@kohaku-eth/pq-stealth-scheme3",
+  "version": "0.1.0",
+  "description": "Kohaku integration for ERC-5564 scheme 3",
+  "type": "module",
+  "private": true,
+  "main": "./dist/sdk/index.js",
+  "types": "./dist/sdk/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/sdk/index.d.ts",
+      "import": "./dist/sdk/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm run build:wasm && pnpm run build:js",
+    "build:wasm": "wasm-pack build --target web --out-name index --out-dir pkg",
+    "build:js": "tsup --config tsup.config.ts && cp -r pkg dist/ && rm -f dist/pkg/.gitignore",
+    "check": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "test:wasm": "wasm-pack test --node",
+    "test:e2e": "pnpm run build:wasm && forge build --root tests/fixtures/anvil && vitest run --config vitest.e2e.config.ts",
+    "example": "wasm-pack build --target web --out-name index --out-dir pkg && forge build --root tests/fixtures/anvil && tsx examples/anvil.ts"
+  },
+  "dependencies": {
+    "@kohaku-eth/plugins": "workspace:*",
+    "@kohaku-eth/provider": "workspace:*",
+    "viem": "^2.51.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.1"
+  }
+}

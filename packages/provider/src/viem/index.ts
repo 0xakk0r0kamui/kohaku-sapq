@@ -3,27 +3,42 @@ export { ViemSignerAdapter } from './signer';
 import type { TxLog, TransactionReceipt, CallData } from '../tx';
 import type { EthereumProvider } from '../provider';
 import { Filter } from 'ox';
-import type { PublicClient } from 'viem';
+import type { PublicClient, RpcLog } from 'viem';
+
+type RequestLogs = (request: {
+    method: 'eth_getLogs';
+    params: [Filter.Rpc];
+}) => Promise<RpcLog[]>;
 
 export const viem = (client: PublicClient): EthereumProvider<PublicClient> => {
     return {
         _internal: client,
         request: client.request.bind(client),
         async getLogs(params: Filter.Filter): Promise<TxLog[]> {
-            const logs = await client.getLogs({
-                address: params.address as `0x${string}`,
-                fromBlock: params.fromBlock as bigint,
-                toBlock: params.toBlock as bigint,
-                // topics: params.topics as HexString[],
+            // Include filter topics in eth_getLogs.
+            const request = client.request.bind(client) as RequestLogs;
+            const logs = await request({
+                method: 'eth_getLogs',
+                params: [Filter.toRpc(params)],
             });
 
-            return logs;
+            return logs.flatMap((log) => {
+                if (log.blockNumber === null) return [];
+
+                return [{
+                    address: log.address,
+                    blockNumber: BigInt(log.blockNumber),
+                    data: log.data,
+                    topics: log.topics,
+                }];
+            });
         },
         async getChainId(): Promise<bigint> {
             return BigInt(await client.getChainId());
         },
         async getBlockNumber(): Promise<bigint> {
-            return await client.getBlockNumber();
+            // Skip viem's block-number cache.
+            return await client.getBlockNumber({ cacheTime: 0 });
         },
         async waitForTransaction(txHash: string): Promise<void> {
             await client.waitForTransactionReceipt({ hash: txHash as `0x${string}` });
