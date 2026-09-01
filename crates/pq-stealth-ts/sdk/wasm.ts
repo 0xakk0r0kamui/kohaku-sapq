@@ -19,11 +19,16 @@ export async function ensureWasm(wasmInput?: InitInput): Promise<void> {
 
 async function initialize(wasmInput?: InitInput): Promise<void> {
   if (!wasmInput && typeof process !== 'undefined' && process.versions?.node) {
-    const [{ readFile }, { dirname, join }, { fileURLToPath }] = await Promise.all([
-      import('node:fs/promises'),
-      import('node:path'),
-      import('node:url'),
-    ]);
+    const modules = await Promise.all([
+      importNodeModule('node:fs/promises'),
+      importNodeModule('node:path'),
+      importNodeModule('node:url'),
+    ]) as [
+      typeof import('node:fs/promises'),
+      typeof import('node:path'),
+      typeof import('node:url'),
+    ];
+    const [{ readFile }, { dirname, join }, { fileURLToPath }] = modules;
     const directory = dirname(fileURLToPath(import.meta.url));
 
     wasmInput = new Uint8Array(await readFile(join(directory, '../pkg/index_bg.wasm')));
@@ -31,6 +36,10 @@ async function initialize(wasmInput?: InitInput): Promise<void> {
 
   wasmInput ??= new URL('../pkg/index_bg.wasm', import.meta.url);
   await initWasm({ module_or_path: wasmInput });
+}
+
+function importNodeModule(specifier: string): Promise<unknown> {
+  return import(/* @vite-ignore */ specifier);
 }
 
 type RustIdentity = { keygen_index: string; meta_address: number[] };

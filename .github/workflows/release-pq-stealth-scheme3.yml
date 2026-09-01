@@ -1,0 +1,49 @@
+name: Release Scheme 3 package
+
+on:
+  push:
+    tags:
+      - 'pq-stealth-scheme3-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
+        with:
+          build-packages: false
+
+      - name: Check release version
+        shell: bash
+        run: |
+          version=$(node -p "require('./crates/pq-stealth-ts/package.json').version")
+          test "${GITHUB_REF_NAME}" = "pq-stealth-scheme3-v${version}"
+
+      - name: Build package
+        run: pnpm --filter @kohaku-eth/pq-stealth-scheme3 build
+
+      - name: Pack package
+        run: |
+          mkdir release
+          pnpm --filter @kohaku-eth/pq-stealth-scheme3 \
+            pack --pack-destination "${GITHUB_WORKSPACE}/release"
+          cd release
+          sha256sum *.tgz > SHA256SUMS
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            release/*.tgz release/SHA256SUMS \
+            --generate-notes \
+            --title "Scheme 3 ${GITHUB_REF_NAME#pq-stealth-scheme3-v}"

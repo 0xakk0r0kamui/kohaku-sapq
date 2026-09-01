@@ -6,6 +6,17 @@
   "private": true,
   "main": "./dist/sdk/index.js",
   "types": "./dist/sdk/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xakk0r0kamui/kohaku-sapq.git",
+    "directory": "crates/pq-stealth-ts"
+  },
+  "bugs": "https://github.com/0xakk0r0kamui/kohaku-sapq/issues",
+  "homepage": "https://github.com/0xakk0r0kamui/kohaku-sapq/tree/pqsa-scheme3/crates/pq-stealth-ts#readme",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
   "exports": {
     ".": {
       "types": "./dist/sdk/index.d.ts",
@@ -16,12 +27,14 @@
   "files": [
     "dist",
     "LICENSE",
+    "LICENSES",
+    "THIRD_PARTY_NOTICES.md",
     "README.md"
   ],
   "scripts": {
     "build": "pnpm run build:wasm && pnpm run build:js",
     "build:wasm": "wasm-pack build --target web --out-name index --out-dir pkg",
-    "build:js": "tsup --config tsup.config.ts && cp -r pkg dist/ && rm -f dist/pkg/.gitignore",
+    "build:js": "tsup --config tsup.config.ts && mkdir -p dist/pkg && cp pkg/index.js pkg/index.d.ts pkg/index_bg.wasm pkg/index_bg.wasm.d.ts dist/pkg/",
     "check": "tsc --noEmit",
     "test": "vitest run --config vitest.config.ts",
     "test:wasm": "wasm-pack test --node",
@@ -40,5 +53,13 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.2",
     "vitest": "^4.1.1"
-  }
+  },
+  "keywords": [
+    "ethereum",
+    "erc-5564",
+    "erc-6538",
+    "stealth-address",
+    "post-quantum",
+    "kohaku"
+  ]
 }

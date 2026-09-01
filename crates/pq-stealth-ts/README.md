@@ -1,9 +1,26 @@
 # `@kohaku-eth/pq-stealth-scheme3`
 
-Kohaku plugin for ERC-5564 scheme 3. Pass a `Host` (seed, storage, RPC) to
-`createScheme3Plugin`. You get a `PluginInstance`.
+Kohaku plugin for ERC-5564 scheme 3. Pass a Kohaku `Host` (keystore, storage,
+RPC) to `createScheme3Plugin`. You get a `Scheme3Instance`.
 
-Public API: `createScheme3Plugin`, `Scheme3Instance`, `PluginParams`.
+## Installation
+
+The package is not published to npm. A GitHub Release attaches the
+`pnpm pack` archive. Install that file together with the Kohaku host packages
+and `viem`:
+
+```bash
+pnpm add https://github.com/0xakk0r0kamui/kohaku-sapq/releases/download/pq-stealth-scheme3-v0.1.0/kohaku-eth-pq-stealth-scheme3-0.1.0.tgz \
+  @kohaku-eth/plugins @kohaku-eth/provider viem
+```
+
+The downloaded release asset can also be installed from a local path with
+`pnpm add ./kohaku-eth-pq-stealth-scheme3-0.1.0.tgz`.
+
+The public API is `createScheme3Plugin` and the input and output types for
+registration, payment, scanning, and spending. WASM bindings are internal.
+Scheme 3 is compiled in from
+[`pq-stealth-scheme3-public@3c77f49`](https://github.com/namnc/pq-stealth-scheme3-public/commit/3c77f4901a0f6abe0208b7d52a4a7e508a604293).
 
 ```ts
 import {
@@ -125,3 +142,9 @@ Pinned to
 After changing the revision, copy vectors with
 `tools/update-scheme3-fixtures.sh PATH_TO_CHECKOUT`. Sibling checkout:
 `cargo test --config .cargo/pqsa-scheme3-local.toml`.
+
+## License
+
+The Kohaku integration is available under the MIT License. The WebAssembly
+binary includes Apache-2.0 code from `pq-stealth-scheme3-public`; see
+`THIRD_PARTY_NOTICES.md` and `LICENSES/Apache-2.0.txt` in the package.

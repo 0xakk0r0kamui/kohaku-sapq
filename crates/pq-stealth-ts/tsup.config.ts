@@ -10,5 +10,10 @@ export default defineConfig({
   dts: true,
   clean: true,
   splitting: true,
-  external: ['@kohaku-eth/plugins', '@kohaku-eth/provider', 'viem'],
+  external: [
+    '../pkg/index.js',
+    '@kohaku-eth/plugins',
+    '@kohaku-eth/provider',
+    'viem',
+  ],
 });

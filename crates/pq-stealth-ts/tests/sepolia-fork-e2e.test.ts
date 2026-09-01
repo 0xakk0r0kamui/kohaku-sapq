@@ -261,9 +261,9 @@ async function send(transaction: { to: string; data: string; value: bigint }) {
 }
 
 function readForkBlock(): bigint | undefined {
-  const value = process.env['PQ_STEALTH_SEPOLIA_FORK_BLOCK'];
+  const value = process.env['PQ_STEALTH_SEPOLIA_FORK_BLOCK']?.trim();
 
-  if (value === undefined) return undefined;
+  if (!value) return undefined;
 
   if (!/^(0|[1-9][0-9]*)$/.test(value)) {
     throw new Error('PQ_STEALTH_SEPOLIA_FORK_BLOCK must be a non-negative integer');
