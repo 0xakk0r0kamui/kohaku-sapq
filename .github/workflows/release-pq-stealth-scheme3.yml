@@ -2,6 +2,8 @@ name: Release Scheme 3 package
 
 on:
   push:
+    branches:
+      - 'pqsa-scheme3'
     tags:
       - 'pq-stealth-scheme3-v*'
 
@@ -23,6 +25,7 @@ jobs:
           build-packages: false
 
       - name: Check release version
+        if: startsWith(github.ref, 'refs/tags/')
         shell: bash
         run: |
           version=$(node -p "require('./crates/pq-stealth-ts/package.json').version")
@@ -39,7 +42,18 @@ jobs:
           cd release
           sha256sum *.tgz > SHA256SUMS
 
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pq-stealth-scheme3-${{ github.sha }}
+          path: |
+            release/*.tgz
+            release/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Create GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
