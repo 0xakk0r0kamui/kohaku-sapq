@@ -26,6 +26,7 @@
     "test": "vitest run --config vitest.config.ts",
     "test:wasm": "wasm-pack test --node",
     "test:e2e": "pnpm run build:wasm && forge build --root tests/fixtures/anvil && vitest run --config vitest.e2e.config.ts",
+    "test:e2e:sepolia-fork": "pnpm run build:wasm && node --env-file-if-exists=../../.env node_modules/vitest/vitest.mjs run --config vitest.sepolia-fork.config.ts",
     "example": "wasm-pack build --target web --out-name index --out-dir pkg && forge build --root tests/fixtures/anvil && tsx examples/anvil.ts"
   },
   "dependencies": {

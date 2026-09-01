@@ -101,6 +101,22 @@ corepack pnpm@10.28.0 --filter @kohaku-eth/pq-stealth-scheme3 test
 corepack pnpm@10.28.0 --filter @kohaku-eth/pq-stealth-scheme3 test:e2e
 ```
 
+The Anvil E2E test deploys local fixtures and covers native ETH and ERC-20.
+The Sepolia fork test uses the existing ERC-5564 announcer and ERC-6538
+registry, and does not deploy contracts:
+
+```bash
+cp .env.sample .env
+# Set RPC_URL_SEPOLIA and, optionally, PQ_STEALTH_SEPOLIA_FORK_BLOCK.
+corepack pnpm@10.28.0 --filter @kohaku-eth/pq-stealth-scheme3 \
+  test:e2e:sepolia-fork
+```
+
+If `.env` does not set `RPC_URL_SEPOLIA`, the test reports that it is using
+`https://ethereum-sepolia-rpc.publicnode.com`. Public RPCs may be rate-limited.
+Without `PQ_STEALTH_SEPOLIA_FORK_BLOCK`, Anvil forks the latest block.
+Transactions produced by this test are local to the fork.
+
 JS scripts need Node 22, or pnpm 10.28.0. `nvm use 22`, or prefix `pnpm` with
 `corepack pnpm@10.28.0`.
 
