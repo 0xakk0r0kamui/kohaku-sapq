@@ -31,8 +31,8 @@ jobs:
           version=$(node -p "require('./crates/pq-stealth-ts/package.json').version")
           test "${GITHUB_REF_NAME}" = "pq-stealth-scheme3-v${version}"
 
-      - name: Build package
-        run: pnpm --filter @kohaku-eth/pq-stealth-scheme3 build
+      - name: Build package and workspace dependencies
+        run: pnpm --filter @kohaku-eth/pq-stealth-scheme3... build
 
       - name: Pack package
         run: |
