@@ -10,12 +10,12 @@ The package is not published to npm. A GitHub Release attaches the
 and `viem`:
 
 ```bash
-pnpm add https://github.com/0xakk0r0kamui/kohaku-sapq/releases/download/pq-stealth-scheme3-v0.1.0/kohaku-eth-pq-stealth-scheme3-0.1.0.tgz \
+pnpm add https://github.com/0xakk0r0kamui/kohaku-sapq/releases/download/pq-stealth-scheme3-v0.1.1/kohaku-eth-pq-stealth-scheme3-0.1.1.tgz \
   @kohaku-eth/plugins @kohaku-eth/provider viem
 ```
 
 The downloaded release asset can also be installed from a local path with
-`pnpm add ./kohaku-eth-pq-stealth-scheme3-0.1.0.tgz`.
+`pnpm add ./kohaku-eth-pq-stealth-scheme3-0.1.1.tgz`.
 
 The public API is `createScheme3Plugin` and the input and output types for
 registration, payment, scanning, and spending. WASM bindings are internal.

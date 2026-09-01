@@ -4617,7 +4617,7 @@ dependencies = [
 
 [[package]]
 name = "pq-stealth-scheme3"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "alloy",
  "console_error_panic_hook",

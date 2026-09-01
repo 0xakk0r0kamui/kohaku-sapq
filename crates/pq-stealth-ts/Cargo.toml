@@ -1,6 +1,6 @@
 [package]
 name = "pq-stealth-scheme3"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Kohaku integration for ERC-5564 scheme 3"
 license = "MIT"
